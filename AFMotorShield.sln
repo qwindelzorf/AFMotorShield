@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AFMotorShield", "AFMotorShield\AFMotorShield.csproj", "{62474C95-31C5-494A-BBD2-5007E2F0D6F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorTest", "MotorTest\MotorTest.csproj", "{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62474C95-31C5-494A-BBD2-5007E2F0D6F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62474C95-31C5-494A-BBD2-5007E2F0D6F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62474C95-31C5-494A-BBD2-5007E2F0D6F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62474C95-31C5-494A-BBD2-5007E2F0D6F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE5F6AD-E5AB-4AE6-AFF7-50D2184D4131}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
