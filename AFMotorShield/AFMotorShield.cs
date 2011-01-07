@@ -39,8 +39,8 @@ namespace AFMotorShield
         /// </summary>
         public enum MotorHeaders
         {
-            M1,
-            M2,
+            //M1,
+            //M2,
             M3,
             M4
         }
@@ -48,14 +48,14 @@ namespace AFMotorShield
         /// <summary>
         /// Connections for the PWM pins used by the motor shield
         /// </summary>
-        internal enum PwmPins
+        internal class PwmPins
         {
-            pwm0A = Pins.GPIO_PIN_D6,   // M4
-            pwm0B = Pins.GPIO_PIN_D5,   // M3
-            pwm1A = Pins.GPIO_PIN_D9,   // Servo 2
-            pwm1B = Pins.GPIO_PIN_D10,  // Servo 1
-            pwm2A = Pins.GPIO_PIN_D11,  // M1
-            pwm2B = Pins.GPIO_PIN_D3,   // M2
+            public static Cpu.Pin pwm0A = Pins.GPIO_PIN_D6;   // M4
+            public static Cpu.Pin pwm0B = Pins.GPIO_PIN_D5;   // M3
+            public static Cpu.Pin pwm1A = Pins.GPIO_PIN_D9;   // Servo 2
+            public static Cpu.Pin pwm1B = Pins.GPIO_PIN_D10;  // Servo 1
+            //public static Cpu.Pin pwm2A = Pins.GPIO_PIN_D11;  // M1
+            //public static Cpu.Pin pwm2B = Pins.GPIO_PIN_D3;   // M2
         }
 
         internal static byte latchState = 0;
@@ -117,25 +117,27 @@ namespace AFMotorShield
         {
             switch (header)
             {
+                /*
                 case MotorHeaders.M1:
                     motorBitA = (int)MotorBits.Motor1_A;
                     motorBitB = (int)MotorBits.Motor1_B;
-                    pwm = new PWM((Cpu.Pin)PwmPins.pwm2A);
+                    pwm = new PWM(PwmPins.pwm2A);
                     break;
                 case MotorHeaders.M2:
                     motorBitA = (int)MotorBits.Motor2_A;
                     motorBitB = (int)MotorBits.Motor2_B;
-                    pwm = new PWM((Cpu.Pin)PwmPins.pwm2B);
+                    pwm = new PWM(PwmPins.pwm2B);
                     break;
+                */
                 case MotorHeaders.M3:
                     motorBitA = (int)MotorBits.Motor3_A;
                     motorBitB = (int)MotorBits.Motor3_B;
-                    pwm = new PWM((Cpu.Pin)PwmPins.pwm0B);
+                    pwm = new PWM(PwmPins.pwm0B);
                     break;
                 case MotorHeaders.M4:
                     motorBitA = (int)MotorBits.Motor4_A;
                     motorBitB = (int)MotorBits.Motor4_B;
-                    pwm = new PWM((Cpu.Pin)PwmPins.pwm0A);
+                    pwm = new PWM(PwmPins.pwm0A);
                     break;
                 default:
                     throw new InvalidOperationException("Invalid motor header specified");
@@ -212,7 +214,7 @@ namespace AFMotorShield
 
         public enum StepperPorts
         {
-            M1_M2,
+            //M1_M2,
             M3_M4,
         }
 
@@ -259,6 +261,7 @@ namespace AFMotorShield
             int latchState = 0;
             switch (stepperPort)
             {
+                /*
                 case StepperPorts.M1_M2:
                     // Turn off all motor pins
                     latchState &= ~(1 << (int)MotorBits.Motor1_A) & 
@@ -266,9 +269,10 @@ namespace AFMotorShield
                                   ~(1 << (int)MotorBits.Motor2_A) &
                                   ~(1 << (int)MotorBits.Motor2_B);
 
-                    coilA = new PWM((Cpu.Pin)PwmPins.pwm0B);
-                    coilB = new PWM((Cpu.Pin)PwmPins.pwm0A);
+                    coilA = new PWM(PwmPins.pwm2A);
+                    coilB = new PWM(PwmPins.pwm2B);
                     break;
+                 */
                 case StepperPorts.M3_M4:
                     // turn off all motor pins
                     latchState &= ~(1 << (int)MotorBits.Motor3_A) & 
@@ -276,8 +280,8 @@ namespace AFMotorShield
                                   ~(1 << (int)MotorBits.Motor4_A) &
                                   ~(1 << (int)MotorBits.Motor4_B);
 
-                    coilA = new PWM((Cpu.Pin)PwmPins.pwm2A);
-                    coilB = new PWM((Cpu.Pin)PwmPins.pwm2B);
+                    coilA = new PWM(PwmPins.pwm0B);
+                    coilB = new PWM(PwmPins.pwm0A);
                     break;
                 default:
                     throw new InvalidOperationException("Invalid motor header specified");
@@ -360,24 +364,24 @@ namespace AFMotorShield
             byte ocrb, ocra;
 
             ocra = ocrb = 255;
-
-            if (stepperPort == StepperPorts.M1_M2) 
+            switch (stepperPort)
             {
-                a = (1<<(int)MotorBits.Motor1_A);
-                b = (1<<(int)MotorBits.Motor2_A);
-                c = (1<<(int)MotorBits.Motor1_B);
-                d = (1<<(int)MotorBits.Motor2_B);
-            } 
-            else if (stepperPort == StepperPorts.M3_M4) 
-            {
-                a = (1<<(int)MotorBits.Motor3_A);
-                b = (1<<(int)MotorBits.Motor4_A);
-                c = (1<<(int)MotorBits.Motor3_B);
-                d = (1<<(int)MotorBits.Motor4_B);
-            } 
-            else 
-            {
-                return 0;
+                /*
+                case StepperPorts.M1_M2;
+                    a = (1<<(int)MotorBits.Motor1_A);
+                    b = (1<<(int)MotorBits.Motor2_A);
+                    c = (1<<(int)MotorBits.Motor1_B);
+                    d = (1<<(int)MotorBits.Motor2_B);
+                    break;
+                */
+                case StepperPorts.M3_M4:
+                    a = (1<<(int)MotorBits.Motor3_A);
+                    b = (1<<(int)MotorBits.Motor4_A);
+                    c = (1<<(int)MotorBits.Motor3_B);
+                    d = (1<<(int)MotorBits.Motor4_B);
+                    break;
+                default:
+                    return 0;
             }
 
             // next determine what sort of stepping procedure we're up to
@@ -549,6 +553,7 @@ namespace AFMotorShield
 
             switch (stepperPort)
             {
+                /*
                 case StepperPorts.M1_M2:
                     // Turn off all motor pins
                     latchState &= ~(1 << (int)MotorBits.Motor1_A) &
@@ -556,6 +561,7 @@ namespace AFMotorShield
                                   ~(1 << (int)MotorBits.Motor2_A) &
                                   ~(1 << (int)MotorBits.Motor2_B);
                     break;
+                */
                 case StepperPorts.M3_M4:
                     // turn off all motor pins
                     latchState &= ~(1 << (int)MotorBits.Motor3_A) &

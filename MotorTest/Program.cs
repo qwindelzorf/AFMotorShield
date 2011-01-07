@@ -13,7 +13,7 @@ namespace MotorTest
         public static void Main()
         {
             OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
-            DCMotor dc = new DCMotor(MotorShield.MotorHeaders.M1);   // A DC motor on header M1
+            DCMotor dc = new DCMotor(MotorShield.MotorHeaders.M4);   // A DC motor on header M1
             dc.SetSpeed(0);
             dc.Run(DCMotor.MotorDirection.Forward); // Disable the motor
 
@@ -37,9 +37,9 @@ namespace MotorTest
                 }
 
                 led.Write((increment > 0) ? true : false);
-                Debug.Print(speed + "\n");
+                //Debug.Print(speed.ToString());
 
-                Thread.Sleep(50);
+                Thread.Sleep(10);
             }
         }
 
