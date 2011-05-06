@@ -28,21 +28,10 @@ namespace AFMotorShield
             Motor1_B = 3,
             Motor2_A = 1,
             Motor2_B = 4,
-            Motor3_A = 0,
+            Motor3_A = 5,
             Motor3_B = 6,
-            Motor4_A = 5,
+            Motor4_A = 0,
             Motor4_B = 7,
-        }
-
-        /// <summary>
-        /// Headers for the motors on the AdaFruit Motor Shield
-        /// </summary>
-        public enum MotorHeaders
-        {
-            //M1,
-            //M2,
-            M3,
-            M4
         }
 
         /// <summary>
@@ -58,7 +47,7 @@ namespace AFMotorShield
             //public static Cpu.Pin pwm2B = Pins.GPIO_PIN_D3;   // M2
         }
 
-        internal static byte latchState = 0;
+        internal byte latchState = 0;
 
         /// <summary>
         /// Sets the state of the latch on the motor shield
@@ -96,6 +85,17 @@ namespace AFMotorShield
         }
     }
 
+    /// <summary>
+    /// Headers for the motors on the AdaFruit Motor Shield
+    /// </summary>
+    public enum MotorHeaders
+    {
+        //M1,
+        //M2,
+        M3,
+        M4
+    }
+
     public class DCMotor : MotorShield
     {
         private static PWM pwm;
@@ -112,7 +112,7 @@ namespace AFMotorShield
         /// A DC Motor controller
         /// </summary>
         /// <param name="header">The header to which the motor is connected</param>
-        /// <param name="frequency">The PWM frequency (in Hz) at which to drive the motor</param>
+        /// <param name="frequency">The PWM frequency (in Hz) at which to drive the motor. Defaults to 10kHz.</param>
         public DCMotor(MotorHeaders header, uint frequency = 10000)
         {
             switch (header)
@@ -235,8 +235,9 @@ namespace AFMotorShield
             /// <remarks>Twice the resolution, but half the speed</remarks>
             Interleave,
             /// <summary>
-            /// 
+            /// 8x or 16x Microstepping
             /// </summary>
+            /// <remarks>8x (or 16x) higher step resolution, but 1/8 (or 1/16) the torque and speed</remarks>
             Microstep,
         }
 
@@ -353,7 +354,7 @@ namespace AFMotorShield
         }
 
         /// <summary>
-        /// Movse the stepper one step
+        /// Move the stepper one step
         /// </summary>
         /// <param name="dir">The direction in which to move</param>
         /// <param name="style">The type of stepping to use</param>
@@ -387,66 +388,31 @@ namespace AFMotorShield
             // next determine what sort of stepping procedure we're up to
             if (style == StepType.Single) 
             {
-                if ((currentStep/(microsteps/2)) % 2 == 0) // we're at an odd step, weird
-                { 
-                    if (dir == MotorDirection.Forward) 
-                    {
-                        currentStep += microsteps/2;
-                    }
-                    else 
-                    {
-                        currentStep -= microsteps/2;
-                    }
+                if ((currentStep/(microsteps/2)) % 2 == 0) // we're at an odd step, weird. Shouldn't happen, but just in case...
+                {
+                    currentStep += (dir == MotorDirection.Forward) ? (uint)(microsteps / 2) : (uint)(-microsteps / 2);
                 } 
                 else // go to the next even step
-                {           
-                    if (dir == MotorDirection.Forward) 
-                    {
-                        currentStep += microsteps;
-                    }
-                    else 
-                    {
-                        currentStep -= microsteps;
-                    }
+                {
+                    currentStep += (dir == MotorDirection.Forward) ? (uint)(microsteps) : (uint)(-microsteps);
                 }
             } 
             
             else if (style == StepType.Double) 
             {
-                if ((currentStep/(microsteps/2) % 2) != 0) // we're at an even step, weird
-                { 
-                    if (dir == MotorDirection.Forward) 
-                    {
-                        currentStep += microsteps/2;
-                    } 
-                    else 
-                    {
-                        currentStep -= microsteps/2;
-                    }
+                if ((currentStep/(microsteps/2) % 2) != 0) // we're at an even step, weird.  Just in case...
+                {
+                    currentStep += (dir == MotorDirection.Forward) ? (uint)(microsteps / 2) : (uint)(-microsteps / 2);
                 } 
                 else  // go to the next odd step
-                {          
-                    if (dir == MotorDirection.Forward) 
-                    {
-                        currentStep += microsteps;
-                    } 
-                    else 
-                    {
-                        currentStep -= microsteps;
-                    }
+                {
+                    currentStep += (dir == MotorDirection.Forward) ? (uint)(microsteps) : (uint)(-microsteps);
                 }
             } 
             
             else if (style == StepType.Interleave)
             {
-                if (dir == MotorDirection.Forward) 
-                {
-                    currentStep += microsteps/2;
-                } 
-                else 
-                {
-                    currentStep -= microsteps/2;
-                }
+                currentStep += (dir == MotorDirection.Forward) ? (uint)(microsteps) : (uint)(-microsteps);
             } 
 
             if (style == StepType.Microstep) 
@@ -584,5 +550,6 @@ namespace AFMotorShield
 
     public class Servo : MotorShield
     {
+        // Not yet implemented
     }
 }

@@ -12,36 +12,32 @@ namespace MotorTest
     {
         public static void Main()
         {
-            OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
-            DCMotor dc = new DCMotor(MotorShield.MotorHeaders.M4);   // A DC motor on header M1
-            dc.SetSpeed(0);
-            dc.Run(DCMotor.MotorDirection.Forward); // Disable the motor
+            DCMotor leftWheel = new DCMotor(MotorHeaders.M4);
+            DCMotor rightWheel = new DCMotor(MotorHeaders.M3);
 
-            int speed = 0;
-            int increment = 1;
+            leftWheel.SetSpeed(0);
+            rightWheel.SetSpeed(0);
+
+            leftWheel.Run(DCMotor.MotorDirection.Forward);
+            rightWheel.Run(DCMotor.MotorDirection.Forward);
+
+            leftWheel.SetSpeed(90);
+            rightWheel.SetSpeed(90);
 
             while (true)
             {
-                dc.SetSpeed((uint)speed);
-                
-                speed += increment;
-                if(speed > 100)
-                {
-                    speed = 100;
-                    increment = -1;
-                }
-                else if (speed < 0)
-                {
-                    speed = 0;
-                    increment = 1;
-                }
+                // spin left
+                leftWheel.Run(DCMotor.MotorDirection.Reverse);
+                rightWheel.Run(DCMotor.MotorDirection.Forward);
 
-                led.Write((increment > 0) ? true : false);
-                //Debug.Print(speed.ToString());
+                Thread.Sleep(1000);
 
-                Thread.Sleep(10);
+                // spin right
+                leftWheel.Run(DCMotor.MotorDirection.Forward);
+                rightWheel.Run(DCMotor.MotorDirection.Reverse);
+
+                Thread.Sleep(1000);
             }
         }
-
     }
 }
